@@ -1,4 +1,5 @@
-import { Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
+import { Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 
 const columns = [
     { id: 'roomName', label: 'Room Name' },
@@ -12,8 +13,10 @@ const rows = [
 ];
 
 export default function RoomTable() {
+    const navigate = useNavigate();
+
     return (
-    <Paper sx={{ marginTop: 10, width: '30vw', overflow: 'hidden' }}>
+    <Paper sx={{ marginTop: 1, width: '30vw', overflow: 'hidden' }}>
         <TableContainer sx={{ maxHeight: 440 }}>
             <Table stickyHeader aria-label="Room Table">
                 <TableHead>
@@ -62,7 +65,7 @@ export default function RoomTable() {
                     })}
                 <TableRow key={rows.length + 1}>
                     <TableCell key={0} align='center' colSpan={4}>
-                        <Button sx={{ width: '80%' }} variant="outlined">Create New Room</Button>
+                        <Button sx={{ width: '80%' }} variant="outlined" onClick={() => navigate('/createRoom')}>Create New Room</Button>
                     </TableCell>
                 </TableRow>
                 </TableBody>
