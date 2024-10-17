@@ -1,22 +1,18 @@
-import { Button, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Typography } from "@mui/material";
-import { useNavigate } from "react-router-dom";
+import { Paper, TableContainer, Table, TableHead, TableRow, TableCell, TableBody, Button } from "@mui/material";
 
 const columns = [
-    { id: 'roomName', label: 'Room Name' },
-    { id: 'numPlayers', label: 'Players' },
-    { id: 'maxPlayers', label: 'Max Players' }
+    { id: 'image', label: 'Image' },
+    { id: 'type', label: 'Type' },
+    { id: 'name', label: 'Name' },
+    { id: 'description', label: 'Description' },
+    { id: 'mana', label: 'Mana' },
+    { id: 'power', label: 'Power' },
+    { id: 'toughness', label: 'Toughness' }
 ];
 
-const rows = [
-    { id: 0, roomName: 'My Room', numPlayers: 2, maxPlayers: 4 },
-    { id: 1, roomName: "Cody's Basement", numPlayers: 3, maxPlayers: 3 }
-];
-
-export default function RoomTable() {
-    const navigate = useNavigate();
-
+export default function DeckBuilderTable({ filteredCards, addCardCallback }) {
     return (
-    <Paper sx={{ marginTop: 1, width: '30vw', overflow: 'hidden' }}>
+        <Paper sx={{ marginTop: 1, width: 'auto', overflow: 'hidden' }}>
         <TableContainer sx={{ maxHeight: 440 }}>
             <Table stickyHeader aria-label="Room Table">
                 <TableHead>
@@ -40,11 +36,11 @@ export default function RoomTable() {
                     </TableRow>
                 </TableHead>
                 <TableBody>
-                    {rows.map((row) => {
+                    {filteredCards.map((card) => {
                         return (
-                            <TableRow key={row.id}>
+                            <TableRow key={card.id}>
                                 {columns.map((column) => {
-                                    const value = row[column.id];
+                                    const value = card[column.id];
                                     return (
                                         <TableCell
                                             key={column.id}
@@ -58,16 +54,11 @@ export default function RoomTable() {
                                     key={99}
                                     align='center'
                                 >
-                                <Button variant="contained" color="success">Join</Button>
+                                <Button variant="contained" color="success" onClick={() => addCardCallback(card) }>Add Card</Button>
                                 </TableCell>
                             </TableRow>
                         );
                     })}
-                <TableRow key={rows.length + 1}>
-                    <TableCell key={0} align='center' colSpan={4}>
-                        <Button sx={{ width: '80%' }} variant="outlined" onClick={() => navigate('/createRoom')}>Create New Room</Button>
-                    </TableCell>
-                </TableRow>
                 </TableBody>
             </Table>
         </TableContainer>
