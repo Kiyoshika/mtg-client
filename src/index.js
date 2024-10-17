@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
 import CreateRoom from './CreateRoom';
+import DeckBuilder from './DeckBuilder';
 import {
   createBrowserRouter,
   RouterProvider,
@@ -16,6 +17,10 @@ const router = createBrowserRouter([
   {
     path: "/createRoom",
     element: <CreateRoom/>
+  },
+  {
+    path: "/deckBuilder",
+    element: <DeckBuilder/>
   }
 ]);
 
