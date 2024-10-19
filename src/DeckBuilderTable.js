@@ -10,7 +10,7 @@ const columns = [
     { id: 'toughness', label: 'Toughness' }
 ];
 
-export default function DeckBuilderTable({ filteredCards, addCardCallback }) {
+export default function DeckBuilderTable({ filteredCards, cardArena }) {
     return (
         <Paper sx={{ marginTop: 1, width: 'auto', overflow: 'hidden' }}>
         <TableContainer sx={{ maxHeight: 440 }}>
@@ -54,7 +54,7 @@ export default function DeckBuilderTable({ filteredCards, addCardCallback }) {
                                     key={99}
                                     align='center'
                                 >
-                                <Button variant="contained" color="success" onClick={() => addCardCallback(card) }>Add Card</Button>
+                                <Button variant="contained" color="success" onClick={() => cardArena.addCard(card) }>Add Card</Button>
                                 </TableCell>
                             </TableRow>
                         );

@@ -2,6 +2,8 @@ import { Button, Divider, Drawer, List, ListItem, Stack, TextField, Toolbar, Typ
 import { useState, useEffect } from "react";
 import CardListAccordion from "./CardListAccordion";
 import DeckBuilderTable from "./DeckBuilderTable";
+import CardArray from "./objects/cards/CardArray";
+import { CardArena } from "./objects/cards/CardArena";
 
 export default function DeckBuilder() {
     const [ numArtifacts, setNumArtifacts ] = useState(0);
@@ -12,7 +14,6 @@ export default function DeckBuilder() {
     const [ numSorceries, setNumSorceries ] = useState(0);
     const [ totalCards, setTotalCards ] = useState(0);
 
-
     const [ selectedArtifacts, setSelectedArtifacts ] = useState([]);
     const [ selectedCreatures, setSelectedCreatures ] = useState([]);
     const [ selectedEnchantments, setSelectedEnchantments ] = useState([]);
@@ -22,6 +23,21 @@ export default function DeckBuilder() {
 
     const [ searchText, setSearchText ] = useState("");
     const [ filteredCards, setFilteredCards ] = useState([]);
+
+    const artifactCards = new CardArray(numArtifacts, setNumArtifacts, selectedArtifacts, setSelectedArtifacts);
+    const creatureCards = new CardArray(numCreatures, setNumCreatures, selectedCreatures, setSelectedCreatures);
+    const enchantmentCards = new CardArray(numEnchantments, setNumEnchantments, selectedEnchantments, setSelectedEnchantments);
+    const instantCards = new CardArray(numInstants, setNumInstants, selectedInstants, setSelectedInstants);
+    const landCards = new CardArray(numLands, setNumLands, selectedLands, setSelectedLands);
+    const sorceryCards = new CardArray(numSorceries, setNumSorceries, selectedSorceries, setSelectedSorceries);
+
+    const cardArena = new CardArena(totalCards, setTotalCards);
+    cardArena.addCardArray('Artifact', artifactCards);
+    cardArena.addCardArray('Creature', creatureCards);
+    cardArena.addCardArray('Enchantment', enchantmentCards);
+    cardArena.addCardArray('Instant', instantCards);
+    cardArena.addCardArray('Land', landCards);
+    cardArena.addCardArray('Sorcery', sorceryCards);
 
     /**
      * Card object prototype:
@@ -46,144 +62,6 @@ export default function DeckBuilder() {
         setFilteredCards(filteredCards);
     }
 
-    function addSelectedCard(card, selectedCardArray) {
-        let cardExists = false;
-
-        for (let _findCard of selectedCardArray) {
-            if (_findCard.name === card.name) {
-                _findCard.qty += 1;
-                cardExists = true;
-                break;
-            }
-        }
-
-        if (!cardExists) {
-            card.qty = 1;
-            selectedCardArray.push(card);
-        }
-    }
-
-    function addCardCallback(card) {
-        const cardCopy = {...card};
-
-        switch (card.type) {
-            case "Artifact": {
-                addSelectedCard(cardCopy, selectedArtifacts);
-                setSelectedArtifacts([...selectedArtifacts]);
-                setNumArtifacts(numArtifacts + 1);
-                break;
-            }
-            case "Creature": {
-                addSelectedCard(cardCopy, selectedCreatures);
-                setSelectedCreatures([...selectedCreatures]);
-                setNumCreatures(numCreatures + 1);
-                break;
-            }
-            case "Enchantment": {
-                addSelectedCard(cardCopy, selectedEnchantments);
-                setSelectedEnchantments([...selectedEnchantments]);
-                setNumEnchantments(numEnchantments + 1);
-                break;
-            }
-            case "Instant": {
-                addSelectedCard(cardCopy, selectedInstants);
-                setSelectedInstants([...selectedInstants]);
-                setNumInstants(numInstants + 1);
-                break;
-            }
-            case "Land": {
-                addSelectedCard(cardCopy, selectedLands);
-                setSelectedLands([...selectedLands]);
-                setNumLands(numLands + 1);
-                break;
-            }
-            case "Sorcery": {
-                addSelectedCard(cardCopy, selectedSorceries);
-                setSelectedSorceries([...selectedSorceries]);
-                setNumSorceries(numSorceries + 1);
-                break;
-            }
-        }
-    }
-
-    function decrementCard(card, cardArray, setCardArray, numCards, setNumCards) {
-        setNumCards(numCards - 1);
-        if (card.qty <= 0) {
-            let idx = cardArray.indexOf(card);
-            cardArray.splice(idx, 1);
-            setCardArray([...cardArray]);
-        }
-    }
-
-    function incrementCard(cardArray, setCardArray, numCards, setNumCards) {
-        setNumCards(numCards + 1);
-        setCardArray([...cardArray]);
-    }
-
-    function decrementCardCallback(card) {
-        card.qty -= 1;
-        switch (card.type) {
-            case "Artifact": {
-                decrementCard(card, selectedArtifacts, setSelectedArtifacts, numArtifacts, setNumArtifacts);
-                break;
-            }
-            case "Creature": {
-                decrementCard(card, selectedCreatures, setSelectedCreatures, numCreatures, setNumCreatures);
-                break;
-            }
-            case "Enchantment": {
-                decrementCard(card, selectedEnchantments, setSelectedEnchantments, numEnchantments, setNumEnchantments);
-                break;
-            }
-            case "Instant": {
-                decrementCard(card, selectedInstants, setSelectedInstants, numInstants, setNumInstants);
-                break;
-            }
-            case "Land": {
-                decrementCard(card, selectedLands, setSelectedLands, numLands, setNumLands);
-                break;
-            }
-            case "Sorcery": {
-                decrementCard(card, selectedSorceries, setSelectedSorceries, numSorceries, setNumSorceries);
-                break;
-            }
-        }
-    }
-
-    function incrementCardCallback(card) {
-        card.qty += 1;
-        switch (card.type) {
-            case "Artifact": {
-                incrementCard(selectedArtifacts, setSelectedArtifacts, numArtifacts, setNumArtifacts);
-                break;
-            }
-            case "Creature": {
-                incrementCard(selectedCreatures, setSelectedCreatures, numCreatures, setNumCreatures);
-                break;
-            }
-            case "Enchantment": {
-                incrementCard(selectedEnchantments, setSelectedEnchantments, numEnchantments, setNumEnchantments);
-                break;
-            }
-            case "Instant": {
-                incrementCard(selectedInstants, setSelectedInstants, numInstants, setNumInstants);
-                break;
-            }
-            case "Land": {
-                incrementCard(selectedLands, setSelectedLands, numLands, setNumLands);
-                break;
-            }
-            case "Sorcery": {
-                incrementCard(selectedSorceries, setSelectedSorceries, numSorceries, setNumSorceries);
-                break;
-            }
-        }
-    }
-
-    useEffect(() => {
-        setTotalCards(numCreatures + numInstants + numArtifacts + numEnchantments + numLands + numSorceries);
-    }, [numCreatures, numInstants, numArtifacts, numEnchantments, numLands, numSorceries]);
-
     return (
         <div className="App">
 
@@ -204,7 +82,9 @@ export default function DeckBuilder() {
                         Search
                     </Button>
                 </Stack>
-                <DeckBuilderTable filteredCards={filteredCards} addCardCallback={addCardCallback} />
+                <DeckBuilderTable
+                    filteredCards={filteredCards}
+                    cardArena={cardArena} />
             </Stack>
 
 
@@ -230,54 +110,41 @@ export default function DeckBuilder() {
                     <ListItem key={0} disablePadding>
                         <CardListAccordion
                             name="Artifacts"
-                            numItems={numArtifacts}
-                            selectedCards={selectedSorceries}
-                            incrementCardCallback={incrementCardCallback}
-                            decrementCardCallback={decrementCardCallback} />
+                            type="Artifact"
+                            cardArena={cardArena} />
                     </ListItem>
                     <ListItem key={1} disablePadding>
                         <CardListAccordion
                             name="Creatures"
-                            numItems={numCreatures}
-                            selectedCards={selectedCreatures}
-                            incrementCardCallback={incrementCardCallback}
-                            decrementCardCallback={decrementCardCallback} />
+                            type="Creature"
+                            cardArena={cardArena} />
                     </ListItem>
                     <ListItem key={2} disablePadding>
                         <CardListAccordion
                             name="Enchantments"
-                            numItems={numEnchantments}
-                            selectedCards={selectedEnchantments}
-                            incrementCardCallback={incrementCardCallback}
-                            decrementCardCallback={decrementCardCallback} />
+                            type="Enchantment"
+                            cardArena={cardArena} />
                     </ListItem>
                     <ListItem key={3} disablePadding>
                         <CardListAccordion
                             name="Instants"
-                            numItems={numInstants}
-                            selectedCards={selectedInstants}
-                            incrementCardCallback={incrementCardCallback} 
-                            decrementCardCallback={decrementCardCallback} />
+                            type="Instant"
+                            cardArena={cardArena} />
                     </ListItem>
                     <ListItem key={4} disablePadding>
                         <CardListAccordion
                             name="Lands"
-                            numItems={numLands}
-                            selectedCards={selectedLands}
-                            incrementCardCallback={incrementCardCallback}
-                            decrementCardCallback={decrementCardCallback} />
+                            type="Land"
+                            cardArena={cardArena} />
                     </ListItem>
                     <ListItem key={5} disablePadding>
                         <CardListAccordion
                             name="Sorceries"
-                            numItems={numSorceries}
-                            selectedCards={selectedSorceries}
-                            incrementCardCallback={incrementCardCallback}
-                            decrementCardCallback={decrementCardCallback} />
+                            type="Sorcery"
+                            cardArena={cardArena} />
                     </ListItem>
                 </List>
             </Drawer>
-            
         </div>
     );
 }
