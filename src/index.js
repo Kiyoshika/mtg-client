@@ -8,6 +8,7 @@ import {
   RouterProvider,
 } from 'react-router-dom';
 import { createTheme, CssBaseline, ThemeProvider } from '@mui/material';
+import PlayerTable from './PlayerTable';
 
 const router = createBrowserRouter([
   {
@@ -21,6 +22,10 @@ const router = createBrowserRouter([
   {
     path: "/deckBuilder",
     element: <DeckBuilder/>
+  },
+  {
+    path: "/roomTest",
+    element: <PlayerTable/>
   }
 ]);
 
