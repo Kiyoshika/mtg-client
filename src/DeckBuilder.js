@@ -51,6 +51,7 @@ export default function DeckBuilder() {
      */
 
     /* pseudo cardDatabase for testing */
+    /* TODO: replace this with the new CardInfo.js object */
     const cardDatabase = [
         { type: 'Instant', name: 'Blueberry Shake', description: 'Some fake card', mana: '3B', qty: 0, imageURL: 'https://cards.scryfall.io/normal/front/6/d/6da045f8-6278-4c84-9d39-025adf0789c1.jpg?1562404626'},
         { type: 'Creature', name: 'Green Goblin', description: 'ooga booga', mana: '1G', power: 1, toughness: 1, qty: 0, imageURL: 'https://cards.scryfall.io/normal/front/6/d/6da045f8-6278-4c84-9d39-025adf0789c1.jpg?1562404626'},

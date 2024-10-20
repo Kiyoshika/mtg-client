@@ -1,6 +1,8 @@
-import { Stack, Typography, Paper, MenuList, MenuItem, ListItemText, Divider } from "@mui/material";
+import { Stack, Typography, Paper, MenuList, MenuItem, ListItemText, Divider, Card } from "@mui/material";
 import Grid from '@mui/material/Grid2';
 import { useState, useRef, useEffect } from "react";
+import CardInfo from "./objects/cards/CardInfo";
+import './ImageCard.css';
 
 export default function PlayerTable() {
 
@@ -9,6 +11,13 @@ export default function PlayerTable() {
     const [ showDeckContextMenu, setShowDeckContextMenu ] = useState(false);
     const [ contextMenuX, setContextMenuX ] = useState(0);
     const [ contextMenuY, setContextMenuY ] = useState(0);
+
+    const [ playerCards, setPlayerCards ] = useState([]);
+
+
+    function createSampleCard() {
+        return new CardInfo('type', 'name', 'description', 'mana', 5, 5, 'https://cards.scryfall.io/normal/front/6/d/6da045f8-6278-4c84-9d39-025adf0789c1.jpg?1562404626');
+    }
 
     useEffect(() => {
         document.getElementById('root').addEventListener('click', (e) => {
@@ -48,18 +57,29 @@ export default function PlayerTable() {
                         <Divider />
                         <MenuList>
                             <MenuItem>
-                                <ListItemText>
+                                <ListItemText onClick={() => {
+                                    if (deckCount > 0) {
+                                        playerCards.push(createSampleCard());
+                                        setPlayerCards([...playerCards]);
+                                        setDeckCount(deckCount - 1);
+                                    }
+                                }}>
                                     Draw Card
                                 </ListItemText>
                             </MenuItem>
                             <MenuItem>
-                                <ListItemText onClick={() => console.log("Draw X Cards")}>
+                                <ListItemText> 
                                     Draw X Cards
                                 </ListItemText>
                             </MenuItem>
                             <MenuItem>
                                 <ListItemText>
                                     View Library
+                                </ListItemText>
+                            </MenuItem>
+                            <MenuItem>
+                                <ListItemText>
+                                    Shuffle
                                 </ListItemText>
                             </MenuItem>
                         </MenuList>
@@ -83,7 +103,20 @@ export default function PlayerTable() {
                         { /* LAND FIELD */ }
                         <div style={{ width: '100%', height: '100%', outline: '1px solid red' }}></div>
                         { /* HAND */ }
-                        <div style={{ width: '100%', height: '100%', outline: '1px solid red' }}></div>
+                        <div style={{ width: '100%', height: '100%', outline: '1px solid red' }}>
+                            <Stack sx={{ marginTop: 1, justifyContent: 'center' }} direction="row" spacing={2}>
+                                {playerCards.map((card) => {
+                                    return (
+                                        <div>
+                                            <Stack direction="row">
+                                                <Card className="imageCard" sx={{ zIndex: 2, width: '100px', height: '140px', backgroundColor: 'white', backgroundImage: 'url("' + card.imageURL + '")', backgroundSize: 'cover' }} />
+                                                <img className="hide" style={{ width: '240px', height: '360px' }} src={card.imageURL} />
+                                            </Stack>
+                                        </div>
+                                    )
+                                })}
+                            </Stack>
+                        </div>
                     </Stack>
                 </div>
             </Grid>
