@@ -2,7 +2,6 @@ import { Paper, TableContainer, Table, TableHead, TableRow, TableCell, TableBody
 import './ImageCard.css'
 
 const columns = [
-    { id: 'image', label: 'Image' },
     { id: 'type', label: 'Type' },
     { id: 'name', label: 'Name' },
     { id: 'description', label: 'Description' },
@@ -18,6 +17,12 @@ export default function DeckBuilderTable({ filteredCards, cardArena }) {
             <Table stickyHeader aria-label="Room Table">
                 <TableHead>
                     <TableRow>
+                        <TableCell
+                            sx={{ backgroundColor: 'black' }}
+                            key={'image'}
+                            align='center'>
+                        Image
+                        </TableCell>
                         {columns.map((column) => (
                             <TableCell
                                 sx={{ backgroundColor: 'black' }}
@@ -41,7 +46,7 @@ export default function DeckBuilderTable({ filteredCards, cardArena }) {
                         return (
                             <TableRow key={card.id}>
                                 <TableCell
-                                    key={'imageURL'}
+                                    key={'image'}
                                     align='center'
                                 >
                                     <img className="imageCard" style={{ width: '40px', height: '60px' }} src={card.imageURL} />
