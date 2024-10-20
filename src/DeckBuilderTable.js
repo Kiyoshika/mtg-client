@@ -1,4 +1,5 @@
-import { Paper, TableContainer, Table, TableHead, TableRow, TableCell, TableBody, Button } from "@mui/material";
+import { Paper, TableContainer, Table, TableHead, TableRow, TableCell, TableBody, Button, Card, CardMedia } from "@mui/material";
+import './ImageCard.css'
 
 const columns = [
     { id: 'image', label: 'Image' },
@@ -39,6 +40,14 @@ export default function DeckBuilderTable({ filteredCards, cardArena }) {
                     {filteredCards.map((card) => {
                         return (
                             <TableRow key={card.id}>
+                                <TableCell
+                                    key={'imageURL'}
+                                    align='center'
+                                >
+                                    <img className="imageCard" style={{ width: '40px', height: '60px' }} src={card.imageURL} />
+                                    <img className="hide hoverCard" style={{ width: '240px', height: '360px' }} src={card.imageURL} />
+                                </TableCell>
+                                
                                 {columns.map((column) => {
                                     const value = card[column.id];
                                     return (

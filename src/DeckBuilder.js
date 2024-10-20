@@ -52,9 +52,9 @@ export default function DeckBuilder() {
 
     /* pseudo cardDatabase for testing */
     const cardDatabase = [
-        { type: 'Instant', name: 'Blueberry Shake', description: 'Some fake card', mana: '3B', qty: 0},
-        { type: 'Creature', name: 'Green Goblin', description: 'ooga booga', mana: '1G', power: 1, toughness: 1, qty: 0},
-        { type: 'Creature', name: 'Batman', description: "I'm batman", mana: '5BB', power: 5, toughness: 4, qty: 0},
+        { type: 'Instant', name: 'Blueberry Shake', description: 'Some fake card', mana: '3B', qty: 0, imageURL: 'https://cards.scryfall.io/normal/front/6/d/6da045f8-6278-4c84-9d39-025adf0789c1.jpg?1562404626'},
+        { type: 'Creature', name: 'Green Goblin', description: 'ooga booga', mana: '1G', power: 1, toughness: 1, qty: 0, imageURL: 'https://cards.scryfall.io/normal/front/6/d/6da045f8-6278-4c84-9d39-025adf0789c1.jpg?1562404626'},
+        { type: 'Creature', name: 'Batman', description: "I'm batman", mana: '5BB', power: 5, toughness: 4, qty: 0, imageURL: 'https://cards.scryfall.io/normal/front/6/d/6da045f8-6278-4c84-9d39-025adf0789c1.jpg?1562404626'}
     ]
 
     const searchCard = () => {
@@ -86,7 +86,6 @@ export default function DeckBuilder() {
                     filteredCards={filteredCards}
                     cardArena={cardArena} />
             </Stack>
-
 
             {/* SIDE BAR FOR CARD LIST */}
             <Drawer sx={{

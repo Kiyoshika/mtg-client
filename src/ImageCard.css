@@ -1,0 +1,12 @@
+.hide {
+    display: none;
+}
+
+.hoverCard {
+    position: absolute;
+    z-index: 1;
+}
+
+.imageCard:hover + .hide {
+    display: block;
+}
