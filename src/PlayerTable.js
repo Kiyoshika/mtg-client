@@ -3,20 +3,70 @@ import Grid from '@mui/material/Grid2';
 import { useState, useRef, useEffect } from "react";
 import CardInfo from "./objects/cards/CardInfo";
 import './ImageCard.css';
+import HandCard from "./HandCard";
+import CardSlot from "./CardSlot";
 
 export default function PlayerTable() {
 
     const [ deckCount, setDeckCount ] = useState(100);
     const deckRef = useRef();
+    const cardRef = useRef();
+    const cardSlotRef = useRef();
+
     const [ showDeckContextMenu, setShowDeckContextMenu ] = useState(false);
     const [ contextMenuX, setContextMenuX ] = useState(0);
     const [ contextMenuY, setContextMenuY ] = useState(0);
 
+    /* TODO: add more card slots */
+    const [ zoneOneCards, setZoneOneCards ] = useState([null, null, null]);
+    const [ zoneTwoCards, setZoneTwoCards ] = useState([null]);
+    const [ zoneThreeCards, setZoneThreeCards ] = useState([null]);
+
     const [ playerCards, setPlayerCards ] = useState([]);
 
+    function addCardToSlotCallback(zoneIdx, slotIdx, handIdx) {
+        console.log(playerCards);
+        console.log(handIdx);
+        switch (zoneIdx) {
+            case 0: {
+                let cardCopy = {...playerCards[handIdx]};
+                playerCards.splice(handIdx, 1);
+                setPlayerCards([...playerCards]);
+
+                zoneOneCards[slotIdx] = cardCopy;
+                setZoneOneCards([...zoneOneCards]);
+
+                console.log(playerCards);
+                console.log(zoneOneCards);
+                break;
+            }
+            case 1: {
+                break;
+            }
+            case 2: {
+                break;
+            }
+        }
+    }
 
     function createSampleCard() {
         return new CardInfo('type', 'name', 'description', 'mana', 5, 5, 'https://cards.scryfall.io/normal/front/6/d/6da045f8-6278-4c84-9d39-025adf0789c1.jpg?1562404626');
+    }
+
+    function allowDrop(e) {
+        e.preventDefault();
+    }
+
+    function drag(e) {
+        e.dataTransfer.setData("card", e.target.id);
+        console.log(e.target.id);
+    }
+
+    function drop(e) {
+        e.preventDefault();
+        var data = e.dataTransfer.getData("card");
+        console.log(data);
+        e.target.appendChild(document.getElementById(data));
     }
 
     useEffect(() => {
@@ -97,7 +147,13 @@ export default function PlayerTable() {
                 <div style={{ width: '100%', height: '100%', outline: '1px solid white' }}>
                     <Stack sx={{ height: '100%' }} spacing={1}>
                         { /* CREATURE FIELD */}
-                        <div style={{ width: '100%', height: '100%', outline: '1px solid red' }}></div>
+                        <div style={{ width: '100%', height: '100%', outline: '1px solid red' }}>
+                            <Stack sx={{ marginLeft: 5, height: '100%', alignItems: 'center' }} direction="row" spacing={1}>
+                                {zoneOneCards.map((card, idx) => {
+                                    return <CardSlot card={card} zoneIdx={0} slotIdx={idx} addCardToSlotCallback={addCardToSlotCallback}/>
+                                })}
+                            </Stack>
+                        </div>
                         { /* NON-CREATURE FIELD */ }
                         <div style={{ width: '100%', height: '100%', outline: '1px solid red' }}></div>
                         { /* LAND FIELD */ }
@@ -105,13 +161,10 @@ export default function PlayerTable() {
                         { /* HAND */ }
                         <div style={{ width: '100%', height: '100%', outline: '1px solid red' }}>
                             <Stack sx={{ marginTop: 1, justifyContent: 'center' }} direction="row" spacing={2}>
-                                {playerCards.map((card) => {
+                                {playerCards.map((card, idx) => {
                                     return (
                                         <div>
-                                            <Stack direction="row">
-                                                <Card className="imageCard" sx={{ zIndex: 2, width: '100px', height: '140px', backgroundColor: 'white', backgroundImage: 'url("' + card.imageURL + '")', backgroundSize: 'cover' }} />
-                                                <img className="hide" style={{ width: '240px', height: '360px' }} src={card.imageURL} />
-                                            </Stack>
+                                           <HandCard handIdx={idx} card={card} /> 
                                         </div>
                                     )
                                 })}
