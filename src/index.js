@@ -9,6 +9,8 @@ import {
 } from 'react-router-dom';
 import { createTheme, CssBaseline, ThemeProvider } from '@mui/material';
 import PlayerTable from './PlayerTable';
+import { DndProvider } from 'react-dnd';
+import { HTML5Backend } from 'react-dnd-html5-backend';
 
 const router = createBrowserRouter([
   {
@@ -39,9 +41,11 @@ const darkTheme = createTheme({
 
 root.render(
   <React.StrictMode>
-    <ThemeProvider theme={darkTheme}>
-      <CssBaseline/>
-      <RouterProvider router={router} />
-    </ThemeProvider>
+    <DndProvider backend={HTML5Backend}>
+      <ThemeProvider theme={darkTheme}>
+        <CssBaseline/>
+        <RouterProvider router={router} />
+      </ThemeProvider>
+    </DndProvider>
   </React.StrictMode>
 );
