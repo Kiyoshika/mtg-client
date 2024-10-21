@@ -2,10 +2,10 @@ import { Stack, Card } from "@mui/material";
 import { useDrag } from "react-dnd";
 import './ImageCard.css';
 
-export default function HandCard({ card, handIdx }) {
+export default function HandCard({ card, handIdx, }) {
     const [collected, drag, dragPreview] = useDrag(() => ({
         type: 'handCard',
-        item: { handIdx: handIdx }
+        item: {card: card, handIdx: handIdx}
     }));
 
     return (

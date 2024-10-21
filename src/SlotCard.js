@@ -2,10 +2,9 @@ import { Stack, Card } from "@mui/material";
 import { useDrag } from "react-dnd";
 import './ImageCard.css';
 
-export default function SlotCard({ card, zoneIdx, slotIdx }) {
+export default function SlotCard({ card }) {
     const [collected, drag, dragPreview] = useDrag(() => ({
-        type: 'handCard',
-        item: { zoneIdx: zoneIdx, slotIdx: slotIdx }
+        type: 'handCard'
     }));
 
     return (

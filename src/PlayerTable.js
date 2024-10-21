@@ -10,8 +10,6 @@ export default function PlayerTable() {
 
     const [ deckCount, setDeckCount ] = useState(100);
     const deckRef = useRef();
-    const cardRef = useRef();
-    const cardSlotRef = useRef();
 
     const [ showDeckContextMenu, setShowDeckContextMenu ] = useState(false);
     const [ contextMenuX, setContextMenuX ] = useState(0);
@@ -24,20 +22,18 @@ export default function PlayerTable() {
 
     const [ playerCards, setPlayerCards ] = useState([]);
 
-    function addCardToSlotCallback(zoneIdx, slotIdx, handIdx) {
-        console.log(playerCards);
-        console.log(handIdx);
+    const addCardToSlotCallback = (zoneIdx, slotIdx, card, handIdx) => {
         switch (zoneIdx) {
             case 0: {
-                let cardCopy = {...playerCards[handIdx]};
-                playerCards.splice(handIdx, 1);
-                setPlayerCards([...playerCards]);
-
-                zoneOneCards[slotIdx] = cardCopy;
+                zoneOneCards[slotIdx] = {...card};
                 setZoneOneCards([...zoneOneCards]);
 
+                console.log(handIdx);
                 console.log(playerCards);
-                console.log(zoneOneCards);
+                setPlayerCards(prevCards => {
+                    console.log("Previous cards: ", prevCards);
+                    return prevCards.filter((_, idx) => idx !== handIdx);
+                })
                 break;
             }
             case 1: {
@@ -59,13 +55,11 @@ export default function PlayerTable() {
 
     function drag(e) {
         e.dataTransfer.setData("card", e.target.id);
-        console.log(e.target.id);
     }
 
     function drop(e) {
         e.preventDefault();
         var data = e.dataTransfer.getData("card");
-        console.log(data);
         e.target.appendChild(document.getElementById(data));
     }
 
@@ -109,8 +103,7 @@ export default function PlayerTable() {
                             <MenuItem>
                                 <ListItemText onClick={() => {
                                     if (deckCount > 0) {
-                                        playerCards.push(createSampleCard());
-                                        setPlayerCards([...playerCards]);
+                                        setPlayerCards([...playerCards, createSampleCard()]);
                                         setDeckCount(deckCount - 1);
                                     }
                                 }}>
@@ -164,7 +157,7 @@ export default function PlayerTable() {
                                 {playerCards.map((card, idx) => {
                                     return (
                                         <div>
-                                           <HandCard handIdx={idx} card={card} /> 
+                                           <HandCard handIdx={idx} card={{...card}} /> 
                                         </div>
                                     )
                                 })}
