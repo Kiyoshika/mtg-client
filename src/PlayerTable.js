@@ -28,10 +28,7 @@ export default function PlayerTable() {
                 zoneOneCards[slotIdx] = {...card};
                 setZoneOneCards([...zoneOneCards]);
 
-                console.log(handIdx);
-                console.log(playerCards);
                 setPlayerCards(prevCards => {
-                    console.log("Previous cards: ", prevCards);
                     return prevCards.filter((_, idx) => idx !== handIdx);
                 })
                 break;
