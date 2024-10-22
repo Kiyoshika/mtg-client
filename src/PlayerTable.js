@@ -5,6 +5,7 @@ import CardInfo from "./objects/cards/CardInfo";
 import './ImageCard.css';
 import HandCard from "./HandCard";
 import CardSlot from "./CardSlot";
+import FieldZone from "./FieldZone";
 
 export default function PlayerTable() {
 
@@ -15,30 +16,34 @@ export default function PlayerTable() {
     const [ contextMenuX, setContextMenuX ] = useState(0);
     const [ contextMenuY, setContextMenuY ] = useState(0);
 
-    /* TODO: add more card slots */
-    const [ zoneOneCards, setZoneOneCards ] = useState([null, null, null]);
+    const [ zoneOneCards, setZoneOneCards ] = useState([null]); 
     const [ zoneTwoCards, setZoneTwoCards ] = useState([null]);
     const [ zoneThreeCards, setZoneThreeCards ] = useState([null]);
 
     const [ playerCards, setPlayerCards ] = useState([]);
 
+    const setZoneCards = (setZoneCardCallback, slotIdx, card, handIdx) => {
+        setZoneCardCallback(prevCards => {
+            prevCards[slotIdx] = {...card};
+            return prevCards;
+        })
+
+        setPlayerCards(prevCards => {
+            return prevCards.filter((_idx, idx) => idx !== handIdx);
+        })
+    }
+
     const addCardToSlotCallback = (zoneIdx, slotIdx, card, handIdx) => {
         switch (zoneIdx) {
-            case 0: {
-                zoneOneCards[slotIdx] = {...card};
-                setZoneOneCards([...zoneOneCards]);
-
-                setPlayerCards(prevCards => {
-                    return prevCards.filter((_, idx) => idx !== handIdx);
-                })
+            case 0:
+                setZoneCards(setZoneOneCards, slotIdx, card, handIdx);
                 break;
-            }
-            case 1: {
+            case 1:
+                setZoneCards(setZoneTwoCards, slotIdx, card, handIdx);
                 break;
-            }
-            case 2: {
+            case 2:
+                setZoneCards(setZoneThreeCards, slotIdx, card, handIdx);
                 break;
-            }
         }
     }
 
@@ -138,16 +143,16 @@ export default function PlayerTable() {
                     <Stack sx={{ height: '100%' }} spacing={1}>
                         { /* CREATURE FIELD */}
                         <div style={{ width: '100%', height: '100%', outline: '1px solid red' }}>
-                            <Stack sx={{ marginLeft: 5, height: '100%', alignItems: 'center' }} direction="row" spacing={1}>
-                                {zoneOneCards.map((card, idx) => {
-                                    return <CardSlot card={card} zoneIdx={0} slotIdx={idx} addCardToSlotCallback={addCardToSlotCallback}/>
-                                })}
-                            </Stack>
+                            <FieldZone zoneCards={zoneOneCards} zoneIdx={0} addCardToSlotCallback={addCardToSlotCallback} />
                         </div>
                         { /* NON-CREATURE FIELD */ }
-                        <div style={{ width: '100%', height: '100%', outline: '1px solid red' }}></div>
+                        <div style={{ width: '100%', height: '100%', outline: '1px solid red' }}>
+                            <FieldZone zoneCards={zoneTwoCards} zoneIdx={1} addCardToSlotCallback={addCardToSlotCallback} />
+                        </div>
                         { /* LAND FIELD */ }
-                        <div style={{ width: '100%', height: '100%', outline: '1px solid red' }}></div>
+                        <div style={{ width: '100%', height: '100%', outline: '1px solid red' }}>
+                            <FieldZone zoneCards={zoneThreeCards} zoneIdx={2} addCardToSlotCallback={addCardToSlotCallback} />
+                        </div>
                         { /* HAND */ }
                         <div style={{ width: '100%', height: '100%', outline: '1px solid red' }}>
                             <Stack sx={{ marginTop: 1, justifyContent: 'center' }} direction="row" spacing={2}>

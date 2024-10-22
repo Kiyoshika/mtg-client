@@ -12,7 +12,7 @@ export default function CardSlot({ card, zoneIdx, slotIdx, addCardToSlotCallback
     return (
         <div>
             { card === null ?
-                <div ref={drop} style={{ border: '1px dashed white', width: '100px', height: '140px' }} />
+                <div ref={drop} style={{ boxShadow: '0 0 3px 3px #f2ff00', width: '100px', height: '140px' }} />
             : <SlotCard card={card} />
         }
         </div>
